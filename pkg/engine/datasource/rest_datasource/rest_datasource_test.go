@@ -119,7 +119,7 @@ func TestFastHttpJsonDataSourcePlanning(t *testing.T) {
 				Data: &resolve.Object{
 					Fetch: &resolve.SingleFetch{
 						BufferId:             0,
-						Input:                `{"method":"GET","url":"https://example.com/friend"}`,
+						Input:                `{"url":"https://example.com/friend","method":"GET"}`,
 						DataSource:           &Source{},
 						DataSourceIdentifier: []byte("rest_datasource.Source"),
 						OnTypeName:           []byte("Query"),
@@ -137,7 +137,7 @@ func TestFastHttpJsonDataSourcePlanning(t *testing.T) {
 								Nullable: true,
 								Fetch: &resolve.SingleFetch{
 									BufferId:   1,
-									Input:      `{"method":"GET","url":"https://example.com/friend/$$0$$/pet"}`,
+									Input:      `{"url":"https://example.com/friend/$$0$$/pet","method":"GET"}`,
 									DataSource: &Source{},
 									Variables: resolve.NewVariables(
 										&resolve.ObjectVariable{
@@ -256,7 +256,7 @@ func TestFastHttpJsonDataSourcePlanning(t *testing.T) {
 				Data: &resolve.Object{
 					Fetch: &resolve.SingleFetch{
 						BufferId:   0,
-						Input:      `{"method":"GET","url":"https://example.com/$$0$$/$$1$$"}`,
+						Input:      `{"url":"https://example.com/$$0$$/$$1$$","method":"GET"}`,
 						DataSource: &Source{},
 						Variables: resolve.NewVariables(
 							&resolve.ContextVariable{
@@ -338,7 +338,7 @@ func TestFastHttpJsonDataSourcePlanning(t *testing.T) {
 						Fetches: []resolve.Fetch{
 							&resolve.SingleFetch{
 								BufferId:   0,
-								Input:      `{"method":"GET","url":"https://example.com/$$0$$/$$1$$"}`,
+								Input:      `{"url":"https://example.com/$$0$$/$$1$$","method":"GET"}`,
 								DataSource: &Source{},
 								Variables: resolve.NewVariables(
 									&resolve.ContextVariable{
@@ -357,7 +357,7 @@ func TestFastHttpJsonDataSourcePlanning(t *testing.T) {
 							},
 							&resolve.SingleFetch{
 								BufferId:   3,
-								Input:      `{"method":"GET","url":"https://example.com/$$0$$/$$1$$"}`,
+								Input:      `{"url":"https://example.com/$$0$$/$$1$$","method":"GET"}`,
 								DataSource: &Source{},
 								Variables: resolve.NewVariables(
 									&resolve.ContextVariable{
@@ -391,7 +391,7 @@ func TestFastHttpJsonDataSourcePlanning(t *testing.T) {
 									Fetches: []resolve.Fetch{
 										&resolve.SingleFetch{
 											BufferId:   1,
-											Input:      `{"method":"GET","url":"https://example.com/friends/phone/$$0$$"}`,
+											Input:      `{"url":"https://example.com/friends/phone/$$0$$","method":"GET"}`,
 											DataSource: &Source{},
 											Variables: resolve.NewVariables(
 												&resolve.ContextVariable{
@@ -405,7 +405,7 @@ func TestFastHttpJsonDataSourcePlanning(t *testing.T) {
 										},
 										&resolve.SingleFetch{
 											BufferId:   2,
-											Input:      `{"method":"GET","url":"https://example.com/friends/phone/$$0$$"}`,
+											Input:      `{"url":"https://example.com/friends/phone/$$0$$","method":"GET"}`,
 											DataSource: &Source{},
 											Variables: resolve.NewVariables(
 												&resolve.ContextVariable{
@@ -531,7 +531,7 @@ func TestFastHttpJsonDataSourcePlanning(t *testing.T) {
 			},
 		},
 		func(t *testing.T, op ast.Document, actualPlan plan.Plan) {
-			assert.Equal(t, `{"d":"bar","c":"office","b":"home","a":"foo"}`, string(op.Input.Variables))
+			assert.JSONEq(t, `{"d":"bar","c":"office","b":"home","a":"foo"}`, string(op.Input.Variables))
 		},
 	))
 	t.Run("get request with argument using templates with and without spaces", datasourcetesting.RunTest(schema, argumentWithoutVariablesOperation, "ArgumentWithoutVariablesQuery",
@@ -540,7 +540,7 @@ func TestFastHttpJsonDataSourcePlanning(t *testing.T) {
 				Data: &resolve.Object{
 					Fetch: &resolve.SingleFetch{
 						BufferId:   0,
-						Input:      `{"method":"GET","url":"https://example.com/$$0$$/$$1$$"}`,
+						Input:      `{"url":"https://example.com/$$0$$/$$1$$","method":"GET"}`,
 						DataSource: &Source{},
 						Variables: resolve.NewVariables(
 							&resolve.ContextVariable{
@@ -688,7 +688,7 @@ func TestFastHttpJsonDataSourcePlanning(t *testing.T) {
 				Data: &resolve.Object{
 					Fetch: &resolve.SingleFetch{
 						BufferId:             0,
-						Input:                `{"body":{"foo":"bar"},"method":"POST","url":"https://example.com/friend"}`,
+						Input:                `{"url":"https://example.com/friend","method":"POST","body":{"foo":"bar"}}`,
 						DataSource:           &Source{},
 						DisallowSingleFlight: true,
 						DataSourceIdentifier: []byte("rest_datasource.Source"),
@@ -758,7 +758,7 @@ func TestFastHttpJsonDataSourcePlanning(t *testing.T) {
 				Data: &resolve.Object{
 					Fetch: &resolve.SingleFetch{
 						BufferId:   0,
-						Input:      `{"header":{"Authorization":["Bearer 123"],"Invalid-Template":["{{ request.headers.Authorization }}"],"Token":["Bearer $$0$$"],"X-API-Key":["456"]},"method":"GET","url":"https://example.com/friend"}`,
+						Input:      `{"url":"https://example.com/friend","method":"GET","header":{"Authorization":["Bearer 123"],"Invalid-Template":["{{ request.headers.Authorization }}"],"Token":["Bearer $$0$$"],"X-API-Key":["456"]}}`,
 						DataSource: &Source{},
 						Variables: []resolve.Variable{
 							&resolve.HeaderVariable{
@@ -837,7 +837,7 @@ func TestFastHttpJsonDataSourcePlanning(t *testing.T) {
 				Data: &resolve.Object{
 					Fetch: &resolve.SingleFetch{
 						BufferId:   0,
-						Input:      `{"query_params":[{"name":"static","value":"staticValue"},{"name":"static","value":"secondStaticValue"},{"name":"name","value":"$$0$$"},{"name":"id","value":"$$1$$"}],"method":"GET","url":"https://example.com/friend"}`,
+						Input:      `{"url":"https://example.com/friend","method":"GET","query_params":[{"name":"static","value":"staticValue"},{"name":"static","value":"secondStaticValue"},{"name":"name","value":"$$0$$"},{"name":"id","value":"$$1$$"}]}`,
 						DataSource: &Source{},
 						Variables: resolve.NewVariables(
 							&resolve.ContextVariable{
@@ -939,7 +939,7 @@ func TestFastHttpJsonDataSourcePlanning(t *testing.T) {
 				Data: &resolve.Object{
 					Fetch: &resolve.SingleFetch{
 						BufferId:   0,
-						Input:      `{"query_params":[{"name":"names","value":"$$0$$"}],"method":"GET","url":"https://example.com/friend"}`,
+						Input:      `{"url":"https://example.com/friend","method":"GET","query_params":[{"name":"names","value":"$$0$$"}]}`,
 						DataSource: &Source{},
 						Variables: resolve.NewVariables(
 							&resolve.ContextVariable{
@@ -1021,7 +1021,7 @@ func TestFastHttpJsonDataSourcePlanning(t *testing.T) {
 				Data: &resolve.Object{
 					Fetch: &resolve.SingleFetch{
 						BufferId:   0,
-						Input:      `{"method":"GET","url":"https://example.com/friend/$$0$$"}`,
+						Input:      `{"url":"https://example.com/friend/$$0$$","method":"GET"}`,
 						DataSource: &Source{},
 						Variables: resolve.NewVariables(
 							&resolve.ContextVariable{

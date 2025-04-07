@@ -755,8 +755,8 @@ func TestExecutionWithOptions(t *testing.T) {
 	resultWriter := NewEngineResultWriter()
 	err = engine.Execute(context.Background(), &operation, &resultWriter, WithBeforeFetchHook(before), WithAfterFetchHook(after))
 
-	assert.Equal(t, `{"method":"GET","url":"https://example.com/","body":{"query":"{hero}"}}`, before.input)
-	assert.Equal(t, `{"hero":{"name":"Luke Skywalker"}}`, after.data)
+	assert.JSONEq(t, `{"method":"GET","url":"https://example.com/","body":{"query":"{hero}"}}`, before.input)
+	assert.JSONEq(t, `{"hero":{"name":"Luke Skywalker"}}`, after.data)
 	assert.Equal(t, "", after.err)
 	assert.NoError(t, err)
 }

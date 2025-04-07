@@ -13,7 +13,7 @@ func TestDocument_ValueToJSON(t *testing.T) {
 		return func(t *testing.T) {
 			out, err := operation.ValueToJSON(prepareDoc(operation))
 			assert.NoError(t, err)
-			assert.Equal(t, expectedOutput, string(out))
+			assert.JSONEq(t, expectedOutput, string(out))
 		}
 	}
 

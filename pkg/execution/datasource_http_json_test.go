@@ -431,7 +431,7 @@ func TestHttpJsonDataSourcePlanner_Plan(t *testing.T) {
 									},
 									&datasource.StaticVariableArgument{
 										Name:  []byte("__typename"),
-										Value: []byte(`{"500":"ErrorType","defaultTypeName":"SuccessType"}`),
+										Value: []byte(`{"defaultTypeName":"SuccessType","500":"ErrorType"}`),
 									},
 								},
 							},
@@ -581,7 +581,7 @@ func TestHttpJsonDataSourcePlanner_Plan(t *testing.T) {
 									},
 									&datasource.StaticVariableArgument{
 										Name:  []byte("__typename"),
-										Value: []byte(`{"500":"ErrorInterface","defaultTypeName":"SuccessInterface"}`),
+										Value: []byte(`{"defaultTypeName":"SuccessInterface","500":"ErrorInterface"}`),
 									},
 								},
 							},

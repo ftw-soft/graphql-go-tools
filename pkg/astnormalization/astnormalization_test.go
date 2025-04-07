@@ -47,7 +47,11 @@ func TestNormalizeOperation(t *testing.T) {
 		want := mustString(astprinter.PrintString(&expectedOutputDocument, &definitionDocument))
 
 		assert.Equal(t, want, got)
-		assert.Equal(t, expectedVariables, string(operationDocument.Input.Variables))
+		if expectedVariables == "" {
+			assert.Empty(t, string(operationDocument.Input.Variables))
+		} else {
+			assert.JSONEq(t, expectedVariables, string(operationDocument.Input.Variables))
+		}
 	}
 
 	t.Run("complex", func(t *testing.T) {
@@ -341,7 +345,11 @@ var runWithVariables = func(t *testing.T, normalizeFunc registerNormalizeVariabl
 	expectedAST := mustString(astprinter.PrintString(&expectedOutputDocument, &definitionDocument))
 	assert.Equal(t, expectedAST, actualAST)
 	actualVariables := string(operationDocument.Input.Variables)
-	assert.Equal(t, expectedVariables, actualVariables)
+	if expectedVariables == "" {
+		assert.Empty(t, actualVariables)
+	} else {
+		assert.JSONEq(t, expectedVariables, actualVariables)
+	}
 }
 
 var runWithDeleteUnusedVariables = func(t *testing.T, normalizeFunc registerNormalizeDeleteVariablesFunc, definition, operation, operationName, expectedOutput, variablesInput, expectedVariables string) {
@@ -405,7 +413,7 @@ var run = func(normalizeFunc registerNormalizeFunc, definition, operation, expec
 	}
 }
 
-var runVariables = func(normalizeFunc registerNormalizeFunc, definition, operation, variablesInput,expectedOutput string) {
+var runVariables = func(normalizeFunc registerNormalizeFunc, definition, operation, variablesInput, expectedOutput string) {
 
 	definitionDocument := unsafeparser.ParseGraphqlDocumentString(definition)
 	err := asttransform.MergeDefinitionWithBaseSchema(&definitionDocument)
