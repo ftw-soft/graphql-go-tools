@@ -38,7 +38,7 @@ var (
 
 type Request struct {
 	OperationName string          `json:"operationName"`
-	Variables     json.RawMessage `json:"variables"`
+	Variables     json.RawMessage `json:"variables,omitempty"`
 	Query         string          `json:"query"`
 
 	document     ast.Document
@@ -48,7 +48,7 @@ type Request struct {
 
 	validForSchema map[uint64]ValidationResult
 
-	DocumentCache *lru.Cache
+	DocumentCache *lru.Cache `json:"-"`
 }
 
 func UnmarshalRequest(reader io.Reader, request *Request) error {

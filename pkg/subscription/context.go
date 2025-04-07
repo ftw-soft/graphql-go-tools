@@ -2,7 +2,12 @@ package subscription
 
 import (
 	"context"
+	"errors"
 	"sync"
+)
+
+var (
+	ErrSubscriberIDAlreadyExists = errors.New("subscriber id already exists")
 )
 
 func newSubscriptionCancellations() subscriptionCancellations {
@@ -14,7 +19,7 @@ func newSubscriptionCancellations() subscriptionCancellations {
 
 type subscriptionCancellations struct {
 	cancelFuncs map[string]context.CancelFunc
-	mux *sync.Mutex
+	mux         *sync.Mutex
 }
 
 func (sc subscriptionCancellations) AddWithParent(id string, parent context.Context) context.Context {
